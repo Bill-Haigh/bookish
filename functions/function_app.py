@@ -5,6 +5,7 @@ from sqlalchemy.orm import sessionmaker
 import os
 from datetime import date
 from models.models import Base, User
+from controllers.books_controller import get_books_handler, post_book_handler
 
 app = func.FunctionApp()
 
@@ -54,3 +55,11 @@ def http_post(req: func.HttpRequest) -> func.HttpResponse:
             "Invalid JSON in request body",
             status_code=400
         )
+
+@app.route(route="books/get", methods=["GET"])
+def get_books(req: func.HttpRequest) -> func.HttpResponse:
+    return get_books_handler(req, SessionLocal)
+
+@app.route(route="books/post", methods=["POST"])
+def post_book(req: func.HttpRequest) -> func.HttpResponse:
+    return post_book_handler(req, SessionLocal)
